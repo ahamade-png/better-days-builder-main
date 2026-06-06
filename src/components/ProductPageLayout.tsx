@@ -70,8 +70,8 @@ const ProductPageLayout = ({
                   <Link to="/contact#request" className="btn-primary">
                     Request Information
                   </Link>
-                  <a href="tel:3134427350" className="btn-outline">
-                    Call 313-442-7350
+                  <a href="tel:3136517596" className="btn-outline">
+                    Call (313) 651-7596
                   </a>
                 </div>
               </motion.div>

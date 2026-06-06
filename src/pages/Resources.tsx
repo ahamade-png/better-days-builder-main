@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     question: "How do I opt out of text messages?",
-    answer: "You can opt out at any time by replying STOP to any message. You can also text HELP for assistance or contact us directly at 313-442-7350.",
+    answer: "You can opt out at any time by replying STOP to any message. You can also text HELP for assistance or contact us directly at (313) 651-7596.",
   },
 ];
 

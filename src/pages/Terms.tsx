@@ -240,7 +240,7 @@ const Terms = () => {
                 <li>Your number will be added to our internal do-not-contact list</li>
               </ul>
               <p>
-                <strong>Note:</strong> Opting out via STOP will remove you from all SMS categories (Service and Marketing). However, if you later need assistance with your policy or application, you can update your preferences by calling us at 313-442-7350.
+                <strong>Note:</strong> Opting out via STOP will remove you from all SMS categories (Service and Marketing). However, if you later need assistance with your policy or application, you can update your preferences by calling us at (313) 651-7596.
               </p>
             </section>
 
@@ -271,7 +271,7 @@ const Terms = () => {
                 <li>A number where you can reliably receive text messages</li>
               </ul>
               <p>
-                National Benefits Services Center is not responsible for messages not delivered due to network issues, carrier errors, or invalid phone numbers. If you change your phone number, please update your contact information on our website or call us at 313-442-7350.
+                National Benefits Services Center is not responsible for messages not delivered due to network issues, carrier errors, or invalid phone numbers. If you change your phone number, please update your contact information on our website or call us at (313) 651-7596.
               </p>
             </section>
 
@@ -281,7 +281,7 @@ const Terms = () => {
                 <strong>No Guaranteed Delivery:</strong> While we use industry-standard SMS providers, message delivery is not guaranteed. Messages may be delayed due to carrier network issues, technical failures, or high message volume. National Benefits Services Center is not liable for undelivered or delayed messages.
               </p>
               <p>
-                <strong>Not an Emergency Service:</strong> SMS is not monitored 24/7 and is not an emergency communication channel. In a medical or emergency situation, call 911. For urgent policy or application issues outside business hours, call our main line at 313-442-7350.
+                <strong>Not an Emergency Service:</strong> SMS is not monitored 24/7 and is not an emergency communication channel. In a medical or emergency situation, call 911. For urgent policy or application issues outside business hours, call our main line at (313) 651-7596.
               </p>
               <p>
                 <strong>Business Hours Support:</strong> SMS support is provided during business hours (8 AM – 5 PM ET, Monday–Friday). Messages sent outside business hours will be responded to the next business day.
@@ -347,8 +347,8 @@ const Terms = () => {
               <ul>
                 <li><strong>Text "HELP"</strong> to any message from National Benefits Services Center</li>
                 <li><strong>Email:</strong> <a href="mailto:support@buildingbetterdaysinsurance.com" className="link">support@buildingbetterdaysinsurance.com</a></li>
-                <li><strong>Phone:</strong> 313-442-7350 (Monday–Friday, 8 AM – 5 PM ET)</li>
-                <li><strong>SMS for Support:</strong> 313-442-7350</li>
+                <li><strong>Phone:</strong> (313) 651-7596 (Monday–Friday, 8 AM – 5 PM ET)</li>
+                <li><strong>SMS for Support:</strong> (313) 651-7596</li>
                 <li><strong>Mailing Address:</strong><br />National Benefits Services Center<br />290 Town Center Drive, Suite 675<br />Dearborn, MI 48126</li>
               </ul>
             </section>

@@ -100,10 +100,10 @@ const FinalExpenseMichigan = () => {
                 </p>
                 <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-white/80">
                   <a
-                    href="tel:+13134427350"
+                    href="tel:+13136517596"
                     className="inline-flex items-center gap-2 hover:text-gold-400 transition-colors"
                   >
-                    <Phone className="w-4 h-4" /> (313) 442-7350
+                    <Phone className="w-4 h-4" /> (313) 651-7596
                   </a>
                   <span>•</span>
                   <span>No medical exam</span>
@@ -284,10 +284,10 @@ const FinalExpenseMichigan = () => {
                   designed for your family's needs.
                 </p>
                 <a
-                  href="tel:+13134427350"
+                  href="tel:+13136517596"
                   className="mt-6 inline-flex items-center gap-2 text-xl font-semibold text-gold-400 hover:text-gold-300 transition-colors"
                 >
-                  <Phone className="w-5 h-5" /> (313) 442-7350
+                  <Phone className="w-5 h-5" /> (313) 651-7596
                 </a>
               </div>
               <div className="bg-white/5 backdrop-blur rounded-2xl border border-white/15 p-6 md:p-7">

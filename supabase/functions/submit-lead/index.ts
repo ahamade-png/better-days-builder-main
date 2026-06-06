@@ -4,9 +4,6 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const GHL_WEBHOOK_URL =
-  "https://services.leadconnectorhq.com/hooks/mwOG1U69TgQiZLdqLjnV/webhook-trigger/83ef0425-b871-4384-92a5-11e4d99ecab3";
-
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -24,59 +21,49 @@ Deno.serve(async (req) => {
       );
     }
 
+    // Send to Follow Up Boss only.
     const results: Record<string, string> = {};
-
-    // 1. Send to GHL webhook
-    try {
-      const ghlRes = await fetch(GHL_WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ full_name, email, phone, need, page, source, submitted_at }),
-      });
-      results.ghl = ghlRes.ok ? "ok" : `failed:${ghlRes.status}`;
-      await ghlRes.text(); // consume body
-    } catch (e) {
-      results.ghl = `error:${e instanceof Error ? e.message : "unknown"}`;
-    }
-
-    // 2. Send to Follow Up Boss
     const FUB_API_KEY = Deno.env.get("FUB_API_KEY");
-    if (FUB_API_KEY) {
-      try {
-        const nameParts = (full_name || "").trim().split(/\s+/);
-        const firstName = nameParts[0] || "";
-        const lastName = nameParts.slice(1).join(" ") || "";
-
-        const fubPayload: Record<string, unknown> = {
-          source: "National Benefit Service Center Website",
-          system: "nbsc-website",
-          type: "General Inquiry",
-          message: need || "Information request from website",
-          person: {
-            firstName,
-            lastName,
-            ...(email ? { emails: [{ value: email }] } : {}),
-            ...(phone ? { phones: [{ value: phone }] } : {}),
-          },
-        };
-
-        const fubRes = await fetch("https://api.followupboss.com/v1/events", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Basic ${btoa(FUB_API_KEY + ":")}`,
-          },
-          body: JSON.stringify(fubPayload),
-        });
-
-        results.fub = fubRes.ok ? "ok" : `failed:${fubRes.status}`;
-        await fubRes.text(); // consume body
-      } catch (e) {
-        results.fub = `error:${e instanceof Error ? e.message : "unknown"}`;
-      }
-    } else {
-      results.fub = "skipped:no_api_key";
+    if (!FUB_API_KEY) {
+      throw new Error("FUB_API_KEY is not configured.");
     }
+
+    const nameParts = (full_name || "").trim().split(/\s+/);
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ") || "";
+
+    const fubPayload: Record<string, unknown> = {
+      source: "National Benefit Service Center Website",
+      system: "nbsc-website",
+      type: "General Inquiry",
+      message: need || "Information request from website",
+      person: {
+        firstName,
+        lastName,
+        ...(email ? { emails: [{ value: email }] } : {}),
+        ...(phone ? { phones: [{ value: phone }] } : {}),
+      },
+      ...(page ? { page } : {}),
+      ...(source ? { source } : {}),
+      ...(submitted_at ? { submittedAt: submitted_at } : {}),
+    };
+
+    const fubRes = await fetch("https://api.followupboss.com/v1/events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${btoa(FUB_API_KEY + ":")}`,
+      },
+      body: JSON.stringify(fubPayload),
+    });
+
+    if (!fubRes.ok) {
+      const errText = await fubRes.text();
+      throw new Error(`FUB request failed (${fubRes.status}): ${errText || "Unknown error"}`);
+    }
+
+    results.fub = "ok";
+    await fubRes.text();
 
     return new Response(
       JSON.stringify({ success: true, results }),

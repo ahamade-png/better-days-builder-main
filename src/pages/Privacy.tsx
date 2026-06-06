@@ -217,7 +217,7 @@ const Privacy = () => {
               </p>
               <ul>
                 <li><strong>Email:</strong> <a href="mailto:support@buildingbetterdaysinsurance.com" className="link">support@buildingbetterdaysinsurance.com</a></li>
-                <li><strong>Phone:</strong> 313-442-7350</li>
+                <li><strong>Phone:</strong> (313) 651-7596</li>
                 <li><strong>Mailing Address:</strong> National Benefits Services Center, 290 Town Center Drive, Suite 675, Dearborn, MI 48126</li>
               </ul>
               <p>
@@ -325,9 +325,9 @@ const Privacy = () => {
               </p>
               <ul>
                 <li><strong>Email:</strong> <a href="mailto:support@buildingbetterdaysinsurance.com" className="link">support@buildingbetterdaysinsurance.com</a></li>
-                <li><strong>Phone:</strong> 313-442-7350 (Monday–Friday, 8 AM – 5 PM ET)</li>
+                <li><strong>Phone:</strong> (313) 651-7596 (Monday–Friday, 8 AM – 5 PM ET)</li>
                 <li><strong>Mailing Address:</strong><br />National Benefits Services Center<br />290 Town Center Drive, Suite 675<br />Dearborn, MI 48126</li>
-                <li><strong>SMS Support:</strong> Text "HELP" to 313-442-7350</li>
+                <li><strong>SMS Support:</strong> Text "HELP" to (313) 651-7596</li>
               </ul>
             </section>
 

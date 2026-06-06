@@ -36,12 +36,12 @@ describe("RequestForm", () => {
 
   it("shows submit button", () => {
     renderForm();
-    expect(screen.getByRole("button", { name: /submit request/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /request my benefits review/i })).toBeInTheDocument();
   });
 
   it("validates empty name on submit", async () => {
     renderForm();
-    fireEvent.click(screen.getByRole("button", { name: /submit request/i }));
+    fireEvent.click(screen.getByRole("button", { name: /request my benefits review/i }));
     await waitFor(() => {
       expect(screen.getByText(/please enter your full name/i)).toBeInTheDocument();
     });
@@ -51,7 +51,7 @@ describe("RequestForm", () => {
     renderForm();
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: "John Doe" } });
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: "notanemail" } });
-    fireEvent.click(screen.getByRole("button", { name: /submit request/i }));
+    fireEvent.click(screen.getByRole("button", { name: /request my benefits review/i }));
     await waitFor(() => {
       expect(screen.getByText(/valid email/i)).toBeInTheDocument();
     });
@@ -61,7 +61,7 @@ describe("RequestForm", () => {
     renderForm();
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: "John Doe" } });
     fireEvent.change(screen.getByLabelText(/phone/i), { target: { value: "123" } });
-    fireEvent.click(screen.getByRole("button", { name: /submit request/i }));
+    fireEvent.click(screen.getByRole("button", { name: /request my benefits review/i }));
     await waitFor(() => {
       expect(screen.getByText(/valid phone/i)).toBeInTheDocument();
     });
@@ -72,7 +72,7 @@ describe("RequestForm", () => {
 
     renderForm();
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: "Jane Smith" } });
-    fireEvent.click(screen.getByRole("button", { name: /submit request/i }));
+    fireEvent.click(screen.getByRole("button", { name: /request my benefits review/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/request has been received/i)).toBeInTheDocument();
@@ -81,34 +81,14 @@ describe("RequestForm", () => {
     expect(supabase.functions.invoke).toHaveBeenCalledWith("submit-lead", expect.any(Object));
   });
 
-  it("falls back to GHL on edge function failure", async () => {
+  it("shows error when edge function fails", async () => {
     (supabase.functions.invoke as ReturnType<typeof vi.fn>).mockResolvedValue({
       error: { message: "function error" },
     });
 
-    global.fetch = vi.fn().mockResolvedValue({ ok: true });
-
     renderForm();
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: "Jane Smith" } });
-    fireEvent.click(screen.getByRole("button", { name: /submit request/i }));
-
-    await waitFor(() => {
-      expect(screen.getByText(/request has been received/i)).toBeInTheDocument();
-    });
-
-    expect(global.fetch).toHaveBeenCalled();
-  });
-
-  it("shows error on complete failure", async () => {
-    (supabase.functions.invoke as ReturnType<typeof vi.fn>).mockResolvedValue({
-      error: { message: "fail" },
-    });
-
-    global.fetch = vi.fn().mockResolvedValue({ ok: false, text: () => Promise.resolve("error") });
-
-    renderForm();
-    fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: "Jane Smith" } });
-    fireEvent.click(screen.getByRole("button", { name: /submit request/i }));
+    fireEvent.click(screen.getByRole("button", { name: /request my benefits review/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
@@ -123,7 +103,7 @@ describe("RequestForm", () => {
 
     renderForm();
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: "Test" } });
-    fireEvent.click(screen.getByRole("button", { name: /submit request/i }));
+    fireEvent.click(screen.getByRole("button", { name: /request my benefits review/i }));
 
     await waitFor(() => {
       const btn = screen.getByRole("button", { name: /submitting/i });
@@ -145,7 +125,7 @@ describe("RequestForm", () => {
 
   it("renders phone call link", () => {
     renderForm();
-    const callLinks = screen.getAllByText(/313-442-7350/i);
+    const callLinks = screen.getAllByText(/\(313\) 651-7596/i);
     expect(callLinks.length).toBeGreaterThan(0);
   });
 
@@ -155,7 +135,7 @@ describe("RequestForm", () => {
     renderForm();
     const nameInput = screen.getByLabelText(/full name/i) as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: "Clear Test" } });
-    fireEvent.click(screen.getByRole("button", { name: /submit request/i }));
+    fireEvent.click(screen.getByRole("button", { name: /request my benefits review/i }));
 
     await waitFor(() => {
       expect(nameInput.value).toBe("");

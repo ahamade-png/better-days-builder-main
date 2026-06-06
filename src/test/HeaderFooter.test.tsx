@@ -11,7 +11,7 @@ describe("Header", () => {
         <Header />
       </BrowserRouter>
     );
-    expect(screen.getByAltText("NBSC logo")).toBeInTheDocument();
+    expect(screen.getByAltText("NBSC — National Benefits Services Center")).toBeInTheDocument();
   });
 
   it("renders company name", () => {
@@ -20,7 +20,7 @@ describe("Header", () => {
         <Header />
       </BrowserRouter>
     );
-    expect(screen.getByText(/Building Better Days LLC/)).toBeInTheDocument();
+    expect(screen.getByAltText(/National Benefits Services Center/i)).toBeInTheDocument();
   });
 
   it("renders nav links", () => {
@@ -29,9 +29,8 @@ describe("Header", () => {
         <Header />
       </BrowserRouter>
     );
-    expect(screen.getByText("Final Expense")).toBeInTheDocument();
-    expect(screen.getByText("Medicare")).toBeInTheDocument();
-    expect(screen.getByText("Supplemental")).toBeInTheDocument();
+    expect(screen.getByText("Services")).toBeInTheDocument();
+    expect(screen.getByText("Home")).toBeInTheDocument();
     expect(screen.getByText("Resources")).toBeInTheDocument();
     expect(screen.getByText("Contact")).toBeInTheDocument();
   });
@@ -42,7 +41,7 @@ describe("Header", () => {
         <Header />
       </BrowserRouter>
     );
-    const ctas = screen.getAllByText("Request Information");
+    const ctas = screen.getAllByText("Get Started");
     expect(ctas.length).toBeGreaterThan(0);
   });
 });
@@ -63,7 +62,7 @@ describe("Footer", () => {
         <Footer />
       </BrowserRouter>
     );
-    expect(screen.getByText(/313-442-7350/)).toBeInTheDocument();
+    expect(screen.getAllByText(/\(313\) 651-7596/).length).toBeGreaterThan(0);
   });
 
   it("renders product links", () => {

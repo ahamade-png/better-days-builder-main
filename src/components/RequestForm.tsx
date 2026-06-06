@@ -4,8 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Phone, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-const GHL_WEBHOOK_URL = "https://services.leadconnectorhq.com/hooks/mwOG1U69TgQiZLdqLjnV/webhook-trigger/83ef0425-b871-4384-92a5-11e4d99ecab3";
-
 const RequestForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -64,37 +62,27 @@ const RequestForm = () => {
     };
 
     try {
-      // Try edge function first (sends to both GHL + Follow Up Boss)
+      // Submit through the edge function so lead routing is centralized.
       const { error: fnError } = await supabase.functions.invoke("submit-lead", {
         body: payload,
       });
 
       if (fnError) {
-        // Fallback: send directly to GHL if edge function fails
-        console.warn("Edge function failed, falling back to direct GHL:", fnError.message);
-        const res = await fetch(GHL_WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        if (!res.ok) {
-          throw new Error(`Submission failed. Please try again or call us directly.`);
-        }
+        throw new Error(fnError.message || "Submission failed.");
       }
 
       setSubmitted(true);
       setFormData({ name: "", email: "", phone: "", need: "" });
     } catch (err) {
       console.error("Form submission error:", err);
-      setError("Something went wrong. Please try again or call us at 313-442-7350.");
+      setError("Something went wrong. Please try again or call us at (313) 651-7596.");
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12" id="request">
+    <div className="grid xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-8 xl:gap-12" id="request">
       {/* Context panel */}
       <div className="flex flex-col justify-center">
         <h2 className="text-3xl md:text-4xl font-semibold text-text tracking-tight">
@@ -111,8 +99,8 @@ const RequestForm = () => {
             </div>
             <div>
               <p className="text-sm text-muted">Prefer to call?</p>
-              <a href="tel:3134427350" className="text-lg font-semibold text-text hover:text-primary-700 transition-colors">
-                313-442-7350
+              <a href="tel:3136517596" className="text-lg font-semibold text-text hover:text-primary-700 transition-colors">
+                (313) 651-7596
               </a>
             </div>
           </div>
@@ -213,8 +201,8 @@ const RequestForm = () => {
                 "Request My Benefits Review"
               )}
             </button>
-            <a href="tel:3134427350" className="btn-outline">
-              Call 313-442-7350
+            <a href="tel:3136517596" className="btn-outline">
+              Call (313) 651-7596
             </a>
           </div>
 

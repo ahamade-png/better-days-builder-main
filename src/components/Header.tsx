@@ -111,11 +111,11 @@ const Header = () => {
 
             {/* Phone — SEO crawlable, clickable on mobile */}
             <a
-              href="tel:+13134427350"
+              href="tel:+13136517596"
               className="flex items-center gap-1.5 text-[13px] font-medium text-muted hover:text-primary-600 transition-colors"
             >
               <Phone className="w-3.5 h-3.5" />
-              (313) 442-7350
+              (313) 651-7596
             </a>
 
             <Link
@@ -129,11 +129,11 @@ const Header = () => {
           {/* Mobile: phone + toggle */}
           <div className="flex items-center gap-3 lg:hidden">
             <a
-              href="tel:+13134427350"
+              href="tel:+13136517596"
               className="flex items-center gap-1.5 text-[12px] font-medium text-muted hover:text-primary-600 transition-colors"
             >
               <Phone className="w-3.5 h-3.5" />
-              <span className="hidden xs:inline">(313) 442-7350</span>
+              <span className="hidden xs:inline">(313) 651-7596</span>
             </a>
             <button
               className="p-2 text-muted hover:text-text rounded-lg hover:bg-muted-surface transition-colors"

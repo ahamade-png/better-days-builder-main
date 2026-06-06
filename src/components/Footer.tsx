@@ -16,10 +16,10 @@ const Footer = () => {
             </div>
             <div className="space-y-2 text-sm text-muted">
               <div>
-                <span className="font-medium text-text">Phone:</span> 313-442-7350
+                <span className="font-medium text-text">Phone:</span> (313) 651-7596
               </div>
               <div>
-                <span className="font-medium text-text">SMS:</span> 313-442-7350
+                <span className="font-medium text-text">SMS:</span> (313) 651-7596
               </div>
               <div>
                 <span className="font-medium text-text">Email:</span> support@buildingbetterdaysinsurance.com

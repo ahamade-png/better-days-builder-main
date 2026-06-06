@@ -10,14 +10,14 @@ const contactMethods = [
   {
     icon: Phone,
     label: "Phone",
-    value: "313-442-7350",
-    href: "tel:3134427350",
+    value: "(313) 651-7596",
+    href: "tel:3136517596",
   },
   {
     icon: MessageSquare,
     label: "SMS",
-    value: "313-442-7350",
-    href: "sms:3134427350",
+    value: "(313) 651-7596",
+    href: "sms:3136517596",
   },
   {
     icon: Mail,
@@ -54,7 +54,7 @@ const Contact = () => {
               </p>
             </motion.div>
 
-            <div className="grid gap-8 lg:grid-cols-2 max-w-5xl mx-auto">
+            <div className="grid gap-8 xl:grid-cols-[minmax(280px,0.85fr)_minmax(0,1.55fr)] max-w-7xl mx-auto items-start">
               {/* Contact methods */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}

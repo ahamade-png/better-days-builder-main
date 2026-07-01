@@ -22,6 +22,7 @@ import BookRedirect from "./pages/Book";
 import BookOfBusinessLogin from "./pages/BookOfBusinessLogin";
 import BookOfBusiness from "./pages/BookOfBusiness";
 import BookOfBusinessResetPassword from "./pages/BookOfBusinessResetPassword";
+import BookOfBusinessSettings from "./pages/BookOfBusinessSettings";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/book" element={<BookRedirect />} />
           <Route path="/book-of-business/login" element={<BookOfBusinessLogin />} />
           <Route path="/book-of-business/reset-password" element={<BookOfBusinessResetPassword />} />
+          <Route path="/book-of-business/settings" element={<BookOfBusinessSettings />} />
           <Route path="/book-of-business" element={<BookOfBusiness />} />
           <Route path="/final-expense" element={<FinalExpense />} />
           <Route path="/best-final-expense-insurance" element={<BestFinalExpenseInsurance />} />

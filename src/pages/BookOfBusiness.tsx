@@ -281,13 +281,22 @@ const BookOfBusiness = () => {
                 <p className="text-sm text-muted mt-1">Client information fields only.</p>
                 <p className="text-xs text-muted mt-1">Data is saved to your secure Book of Business account.</p>
               </div>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="inline-flex items-center justify-center h-10 px-5 text-sm font-semibold text-white bg-primary-600 rounded-full shadow-[0_10px_24px_rgba(31,79,216,0.28)] hover:bg-primary-700 transition-all duration-200"
-              >
-                Log Out
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => navigate("/book-of-business/settings")}
+                  className="inline-flex items-center justify-center h-10 px-5 text-sm font-semibold text-text bg-surface border border-border rounded-full hover:bg-muted transition-all duration-200"
+                >
+                  Settings
+                </button>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="inline-flex items-center justify-center h-10 px-5 text-sm font-semibold text-white bg-primary-600 rounded-full shadow-[0_10px_24px_rgba(31,79,216,0.28)] hover:bg-primary-700 transition-all duration-200"
+                >
+                  Log Out
+                </button>
+              </div>
             </div>
 
             <div className="card p-5 md:p-6 mb-6">

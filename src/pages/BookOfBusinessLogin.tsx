@@ -14,6 +14,7 @@ const BookOfBusinessLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -41,8 +42,16 @@ const BookOfBusinessLogin = () => {
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
+    setSuccess("");
+
     if (query.get("timeout") === "1") {
       setError("Your session expired after 30 minutes. Please log in again.");
+      return;
+    }
+
+    if (query.get("passwordSet") === "1") {
+      setError("");
+      setSuccess("Password created successfully. Please log in.");
     }
   }, [location.search]);
 
@@ -54,6 +63,7 @@ const BookOfBusinessLogin = () => {
     event.preventDefault();
 
     setError("");
+    setSuccess("");
 
     setSubmitting(true);
 
@@ -110,7 +120,7 @@ const BookOfBusinessLogin = () => {
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm"
-                    autoComplete="new-password"
+                    autoComplete="current-password"
                     required
                   />
                 </div>
@@ -118,6 +128,12 @@ const BookOfBusinessLogin = () => {
                 {error ? (
                   <p className="text-sm text-red-600" role="alert">
                     {error}
+                  </p>
+                ) : null}
+
+                {success ? (
+                  <p className="text-sm text-green-700" role="status">
+                    {success}
                   </p>
                 ) : null}
 

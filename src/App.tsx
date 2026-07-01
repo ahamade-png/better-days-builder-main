@@ -19,6 +19,8 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 import BookRedirect from "./pages/Book";
+import BookOfBusinessLogin from "./pages/BookOfBusinessLogin";
+import BookOfBusiness from "./pages/BookOfBusiness";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +35,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/review" element={<Navigate to="/contact#request" replace />} />
           <Route path="/book" element={<BookRedirect />} />
+          <Route path="/book-of-business/login" element={<BookOfBusinessLogin />} />
+          <Route path="/book-of-business" element={<BookOfBusiness />} />
           <Route path="/final-expense" element={<FinalExpense />} />
           <Route path="/best-final-expense-insurance" element={<BestFinalExpenseInsurance />} />
           <Route path="/final-expense-michigan" element={<FinalExpenseMichigan />} />

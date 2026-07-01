@@ -14,7 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      book_of_business_clients: {
+        Row: {
+          created_at: string
+          cs_needed: string
+          date_of_birth: string | null
+          email: string | null
+          full_name: string
+          home_city: string | null
+          home_street: string | null
+          home_zip: string | null
+          id: string
+          lead_quality: string | null
+          lead_type: string | null
+          mailing_city: string | null
+          mailing_state: string | null
+          mailing_street: string | null
+          mailing_zip: string | null
+          notes: string | null
+          phone: string | null
+          referral_affiliate: string | null
+          state: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          why_reason: string | null
+        }
+        Insert: {
+          created_at?: string
+          cs_needed?: string
+          date_of_birth?: string | null
+          email?: string | null
+          full_name: string
+          home_city?: string | null
+          home_street?: string | null
+          home_zip?: string | null
+          id?: string
+          lead_quality?: string | null
+          lead_type?: string | null
+          mailing_city?: string | null
+          mailing_state?: string | null
+          mailing_street?: string | null
+          mailing_zip?: string | null
+          notes?: string | null
+          phone?: string | null
+          referral_affiliate?: string | null
+          state?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          why_reason?: string | null
+        }
+        Update: {
+          created_at?: string
+          cs_needed?: string
+          date_of_birth?: string | null
+          email?: string | null
+          full_name?: string
+          home_city?: string | null
+          home_street?: string | null
+          home_zip?: string | null
+          id?: string
+          lead_quality?: string | null
+          lead_type?: string | null
+          mailing_city?: string | null
+          mailing_state?: string | null
+          mailing_street?: string | null
+          mailing_zip?: string | null
+          notes?: string | null
+          phone?: string | null
+          referral_affiliate?: string | null
+          state?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          why_reason?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

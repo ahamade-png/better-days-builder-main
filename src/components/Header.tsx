@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, Phone } from "lucide-react";
+import { Menu, X, ChevronDown, Phone, UserRound } from "lucide-react";
 import logoNbsc from "@/assets/logo-nbsc-full.jpg";
 
 const serviceLinks = [
@@ -119,6 +119,14 @@ const Header = () => {
             </a>
 
             <Link
+              to="/book-of-business/login"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-border text-muted hover:text-primary-600 hover:border-primary-200 transition-colors"
+              aria-label="Book of Business Login"
+            >
+              <UserRound className="w-4 h-4" />
+            </Link>
+
+            <Link
               to="/contact#request"
               className="inline-flex items-center justify-center h-10 px-5 text-[13px] font-semibold text-white bg-primary-600 rounded-full shadow-[0_10px_24px_rgba(31,79,216,0.28)] hover:bg-primary-700 transition-all duration-200"
             >
@@ -135,6 +143,13 @@ const Header = () => {
               <Phone className="w-3.5 h-3.5" />
               <span className="hidden xs:inline">(313) 651-7596</span>
             </a>
+            <Link
+              to="/book-of-business/login"
+              className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-border text-muted hover:text-primary-600 hover:border-primary-200 transition-colors"
+              aria-label="Book of Business Login"
+            >
+              <UserRound className="w-4 h-4" />
+            </Link>
             <button
               className="p-2 text-muted hover:text-text rounded-lg hover:bg-muted-surface transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}

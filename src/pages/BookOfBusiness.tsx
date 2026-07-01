@@ -13,6 +13,7 @@ import {
   isBookOfBusinessAuthenticated,
   logoutBookOfBusiness,
 } from "@/lib/bookOfBusinessAuth";
+import { supabase } from "@/integrations/supabase/client";
 import {
   createBookOfBusinessClient,
   deleteBookOfBusinessClient,
@@ -52,6 +53,17 @@ const BookOfBusiness = () => {
     };
 
     void checkSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(Boolean(session));
+      setCheckingSession(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import {
   isBookOfBusinessAuthenticated,
   loginBookOfBusiness,
 } from "@/lib/bookOfBusinessAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 const BookOfBusinessLogin = () => {
   const navigate = useNavigate();
@@ -25,6 +26,17 @@ const BookOfBusinessLogin = () => {
     };
 
     void checkSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(Boolean(session));
+      setCheckingSession(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {

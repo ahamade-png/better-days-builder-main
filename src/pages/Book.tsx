@@ -1,9 +1,10 @@
 import { Link, Navigate } from "react-router-dom";
 import { useEffect } from "react";
+import { BOOKING_URL } from "@/lib/booking";
 
 const BookRedirect = () => {
   useEffect(() => {
-    window.location.href = "https://calendly.com/ali-buildingbetterdaysinsurance/insurance-coverage-consultation";
+    window.location.href = BOOKING_URL;
   }, []);
   return null;
 };

@@ -16,6 +16,7 @@ const BookOfBusinessLogin = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [resettingPassword, setResettingPassword] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -79,6 +80,37 @@ const BookOfBusinessLogin = () => {
     navigate("/book-of-business", { replace: true });
   };
 
+  const handleForgotPassword = async () => {
+    setError("");
+    setSuccess("");
+
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      setError("Enter your email address first, then try again.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setResettingPassword(true);
+
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(trimmedEmail, {
+      redirectTo: `${window.location.origin}/book-of-business/reset-password`,
+    });
+
+    if (resetError) {
+      setResettingPassword(false);
+      setError(resetError.message);
+      return;
+    }
+
+    setResettingPassword(false);
+    setSuccess("Password reset email sent. Check your inbox for the recovery link.");
+  };
+
   return (
     <div className="page-wrapper">
       <Header />
@@ -123,6 +155,18 @@ const BookOfBusinessLogin = () => {
                     autoComplete="current-password"
                     required
                   />
+                </div>
+
+                <div className="flex items-center justify-between gap-3 flex-wrap text-sm">
+                  <button
+                    type="button"
+                    onClick={handleForgotPassword}
+                    disabled={resettingPassword}
+                    className="font-medium text-primary-700 hover:text-primary-800 disabled:opacity-60"
+                  >
+                    {resettingPassword ? "Sending reset email..." : "Forgot password?"}
+                  </button>
+                  <span className="text-muted">We’ll email a secure reset link.</span>
                 </div>
 
                 {error ? (

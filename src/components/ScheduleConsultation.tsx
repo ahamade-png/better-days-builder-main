@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
-
-const CALENDLY_URL =
-  "https://calendly.com/ali-buildingbetterdaysinsurance/insurance-coverage-consultation";
+import { BOOKING_URL } from "@/lib/booking";
 
 interface ScheduleConsultationProps {
   embed?: boolean;
@@ -28,7 +26,7 @@ const ScheduleConsultation = ({ embed = false }: ScheduleConsultationProps) => {
 
           {!embed && (
             <a
-              href={CALENDLY_URL}
+              href={BOOKING_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center gap-2 h-14 px-8 rounded-full bg-primary-600 text-white font-semibold text-base hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-200 transition-all duration-200 shadow-lg"
@@ -53,7 +51,7 @@ const ScheduleConsultation = ({ embed = false }: ScheduleConsultationProps) => {
           >
             <div className="rounded-2xl overflow-hidden border border-border bg-bg shadow-md">
               <iframe
-                src={CALENDLY_URL}
+                src={BOOKING_URL}
                 title="Schedule a Free Insurance Coverage Consultation"
                 loading="lazy"
                 className="w-full"
@@ -62,7 +60,7 @@ const ScheduleConsultation = ({ embed = false }: ScheduleConsultationProps) => {
             </div>
             <div className="text-center mt-4">
               <a
-                href={CALENDLY_URL}
+                href={BOOKING_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-primary-700 hover:text-primary-800 underline-offset-4 hover:underline"

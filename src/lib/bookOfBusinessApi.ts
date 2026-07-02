@@ -58,6 +58,17 @@ export async function createBookOfBusinessClient(
     throw new Error("Unable to save this client right now.");
   }
 
+  void supabase.functions
+    .invoke("book-of-business-automation", {
+      body: {
+        campaign: "intro",
+        client_id: data.id,
+      },
+    })
+    .catch((automationError) => {
+      console.error("Failed to queue intro automation", automationError);
+    });
+
   return data as BookOfBusinessClient;
 }
 

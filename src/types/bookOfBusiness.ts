@@ -13,6 +13,8 @@ export interface BookOfBusinessClient {
   why_reason: number | null;
   notes: string | null;
   date_of_birth: string | null;
+  written_date: string | null;
+  draft_date: string | null;
   home_street: string | null;
   home_city: string | null;
   home_zip: string | null;
@@ -33,6 +35,8 @@ export interface BookOfBusinessClientInput {
   why_reason: number;
   notes: string;
   date_of_birth: string;
+  written_date: string;
+  draft_date: string;
   home_street: string;
   home_city: string;
   home_zip: string;
@@ -51,6 +55,8 @@ export const defaultBookOfBusinessClientInput: BookOfBusinessClientInput = {
   why_reason: 0,
   notes: "",
   date_of_birth: "",
+  written_date: "",
+  draft_date: "",
   home_street: "",
   home_city: "",
   home_zip: "",

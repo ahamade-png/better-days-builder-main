@@ -17,7 +17,7 @@ export type Database = {
       book_of_business_clients: {
         Row: {
           created_at: string
-          cs_needed: string
+          cs_needed: number
           date_of_birth: string | null
           email: string | null
           full_name: string
@@ -38,11 +38,13 @@ export type Database = {
           status: string
           updated_at: string
           user_id: string
-          why_reason: string | null
+          draft_date: string | null
+          written_date: string | null
+          why_reason: number | null
         }
         Insert: {
           created_at?: string
-          cs_needed?: string
+          cs_needed?: number
           date_of_birth?: string | null
           email?: string | null
           full_name: string
@@ -63,11 +65,13 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id?: string
-          why_reason?: string | null
+          draft_date?: string | null
+          written_date?: string | null
+          why_reason?: number | null
         }
         Update: {
           created_at?: string
-          cs_needed?: string
+          cs_needed?: number
           date_of_birth?: string | null
           email?: string | null
           full_name?: string
@@ -88,7 +92,9 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id?: string
-          why_reason?: string | null
+          draft_date?: string | null
+          written_date?: string | null
+          why_reason?: number | null
         }
         Relationships: []
       }

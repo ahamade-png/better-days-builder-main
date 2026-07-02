@@ -33,6 +33,23 @@ interface DetailItemProps {
   value: string | null | undefined;
 }
 
+const formatDate = (value: string | null | undefined) => {
+  if (!value) {
+    return "-";
+  }
+
+  const parsedDate = new Date(value);
+  if (Number.isNaN(parsedDate.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(parsedDate);
+};
+
 const formatMoney = (value: number | null) => {
   if (value === null || Number.isNaN(value)) {
     return "-";
@@ -187,6 +204,42 @@ const BookOfBusiness = () => {
     });
   }, [clients, search, sortBy, statusFilter]);
 
+  const metrics = useMemo(() => {
+    let activeCount = 0;
+    let pendingCount = 0;
+    let lapseCount = 0;
+    let totalAp = 0;
+
+    clients.forEach((client) => {
+      const normalizedStatus = client.status?.toLowerCase() ?? "";
+
+      if (normalizedStatus === "active") {
+        activeCount += 1;
+      }
+
+      if (normalizedStatus === "pending") {
+        pendingCount += 1;
+      }
+
+      if (normalizedStatus === "inactive" || normalizedStatus === "lapse" || normalizedStatus === "lapsed") {
+        lapseCount += 1;
+      }
+
+      totalAp += Number(client.cs_needed) || 0;
+    });
+
+    const averageAp = clients.length > 0 ? totalAp / clients.length : 0;
+
+    return {
+      totalClients: clients.length,
+      activeCount,
+      pendingCount,
+      lapseCount,
+      totalAp,
+      averageAp,
+    };
+  }, [clients]);
+
   const setFormField = (field: keyof BookOfBusinessClientInput, value: string) => {
     setForm((previous) => {
       let processedValue: string | number = value;
@@ -213,6 +266,8 @@ const BookOfBusiness = () => {
       why_reason: client.why_reason ?? 0,
       notes: client.notes ?? "",
       date_of_birth: client.date_of_birth ?? "",
+      written_date: client.written_date ?? "",
+      draft_date: client.draft_date ?? "",
       home_street: client.home_street ?? "",
       home_city: client.home_city ?? "",
       home_zip: client.home_zip ?? "",
@@ -353,6 +408,41 @@ const BookOfBusiness = () => {
                 >
                   Add Client
                 </button>
+              </div>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 mb-6">
+              <div className="card p-5">
+                <p className="text-xs uppercase tracking-wide text-muted">Total Clients</p>
+                <p className="mt-2 text-3xl font-semibold text-text">{metrics.totalClients}</p>
+              </div>
+
+              <div className="card p-5">
+                <p className="text-xs uppercase tracking-wide text-muted">Client Status Mix</p>
+                <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
+                  <div>
+                    <p className="text-muted">Active</p>
+                    <p className="text-lg font-semibold text-text">{metrics.activeCount}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted">Pending</p>
+                    <p className="text-lg font-semibold text-text">{metrics.pendingCount}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted">Inactive/Lapse</p>
+                    <p className="text-lg font-semibold text-text">{metrics.lapseCount}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="card p-5">
+                <p className="text-xs uppercase tracking-wide text-muted">Total AP</p>
+                <p className="mt-2 text-3xl font-semibold text-text">{formatMoney(metrics.totalAp)}</p>
+              </div>
+
+              <div className="card p-5">
+                <p className="text-xs uppercase tracking-wide text-muted">Average AP</p>
+                <p className="mt-2 text-3xl font-semibold text-text">{formatMoney(metrics.averageAp)}</p>
               </div>
             </div>
 
@@ -524,6 +614,18 @@ const BookOfBusiness = () => {
                 onChange={(value) => setFormField("date_of_birth", value)}
                 type="date"
               />
+              <Field
+                label="Written Date"
+                value={form.written_date}
+                onChange={(value) => setFormField("written_date", value)}
+                type="date"
+              />
+              <Field
+                label="Draft Date"
+                value={form.draft_date}
+                onChange={(value) => setFormField("draft_date", value)}
+                type="date"
+              />
               <Field label="Home Street" value={form.home_street} onChange={(value) => setFormField("home_street", value)} />
               <Field label="Home City" value={form.home_city} onChange={(value) => setFormField("home_city", value)} />
               <Field label="Home ZIP" value={form.home_zip} onChange={(value) => setFormField("home_zip", value)} />
@@ -587,7 +689,9 @@ const BookOfBusiness = () => {
                   <DetailItem label="Lead Type" value={selectedClient.lead_type} />
                   <DetailItem label="Lead Quality" value={selectedClient.lead_quality} />
                   <DetailItem label="Referral Affiliate" value={selectedClient.referral_affiliate} />
-                  <DetailItem label="Date of Birth" value={selectedClient.date_of_birth} />
+                  <DetailItem label="Date of Birth" value={formatDate(selectedClient.date_of_birth)} />
+                  <DetailItem label="Written Date" value={formatDate(selectedClient.written_date)} />
+                  <DetailItem label="Draft Date" value={formatDate(selectedClient.draft_date)} />
                   <DetailItem label="Home Street" value={selectedClient.home_street} />
                   <DetailItem label="Home City" value={selectedClient.home_city} />
                   <DetailItem label="Home ZIP" value={selectedClient.home_zip} />

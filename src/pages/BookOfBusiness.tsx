@@ -28,6 +28,31 @@ import {
 
 const INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000;
 
+interface DetailItemProps {
+  label: string;
+  value: string | null | undefined;
+}
+
+const formatMoney = (value: number | null) => {
+  if (value === null || Number.isNaN(value)) {
+    return "-";
+  }
+
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(value);
+};
+
+const DetailItem = ({ label, value }: DetailItemProps) => (
+  <div>
+    <p className="text-xs uppercase tracking-wide text-muted mb-1">{label}</p>
+    <p className="text-sm font-medium text-text break-words">{value || "-"}</p>
+  </div>
+);
+
 const BookOfBusiness = () => {
   const navigate = useNavigate();
   const [clients, setClients] = useState<BookOfBusinessClient[]>([]);
@@ -44,6 +69,7 @@ const BookOfBusiness = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [editingClientId, setEditingClientId] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<BookOfBusinessClient | null>(null);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -162,7 +188,14 @@ const BookOfBusiness = () => {
   }, [clients, search, sortBy, statusFilter]);
 
   const setFormField = (field: keyof BookOfBusinessClientInput, value: string) => {
-    setForm((previous) => ({ ...previous, [field]: value }));
+    setForm((previous) => {
+      let processedValue: string | number = value;
+      if (field === "cs_needed" || field === "why_reason") {
+        const numericValue = value === "" ? 0 : Number(value);
+        processedValue = Number.isNaN(numericValue) ? 0 : numericValue;
+      }
+      return { ...previous, [field]: processedValue };
+    });
   };
 
   const fillFormFromClient = (client: BookOfBusinessClient) => {
@@ -177,7 +210,7 @@ const BookOfBusiness = () => {
       lead_type: client.lead_type ?? "",
       lead_quality: client.lead_quality ?? "",
       referral_affiliate: client.referral_affiliate ?? "",
-      why_reason: client.why_reason ?? "",
+      why_reason: client.why_reason ?? 0,
       notes: client.notes ?? "",
       date_of_birth: client.date_of_birth ?? "",
       home_street: client.home_street ?? "",
@@ -196,6 +229,14 @@ const BookOfBusiness = () => {
 
   const closeForm = () => {
     setIsFormOpen(false);
+  };
+
+  const openClientDetails = (client: BookOfBusinessClient) => {
+    setSelectedClient(client);
+  };
+
+  const closeClientDetails = () => {
+    setSelectedClient(null);
   };
 
   const resetFormState = () => {
@@ -368,7 +409,19 @@ const BookOfBusiness = () => {
                   </thead>
                   <tbody>
                     {filteredClients.map((client) => (
-                      <tr key={client.id} className="border-b border-border/70 last:border-0">
+                      <tr
+                        key={client.id}
+                        className="border-b border-border/70 last:border-0 cursor-pointer transition-colors hover:bg-muted/40"
+                        onClick={() => openClientDetails(client)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            openClientDetails(client);
+                          }
+                        }}
+                        tabIndex={0}
+                        aria-label={`View details for ${client.full_name}`}
+                      >
                         <td className="py-3 pr-4 text-text">{client.full_name}</td>
                         <td className="py-3 pr-4 text-muted">{client.status}</td>
                         <td className="py-3 pr-4 text-muted">{client.email || "-"}</td>
@@ -379,14 +432,20 @@ const BookOfBusiness = () => {
                         <td className="py-3 pr-4">
                           <button
                             type="button"
-                            onClick={() => fillFormFromClient(client)}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              fillFormFromClient(client);
+                            }}
                             className="text-sm font-medium text-primary-600 hover:text-primary-700"
                           >
                             Edit
                           </button>
                           <button
                             type="button"
-                            onClick={() => handleDelete(client.id)}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleDelete(client.id);
+                            }}
                             className="ml-4 text-sm font-medium text-red-600 hover:text-red-700"
                           >
                             Delete
@@ -442,11 +501,11 @@ const BookOfBusiness = () => {
                 onChange={(value) => setFormField("status", value)}
                 options={["active", "pending", "inactive"]}
               />
-              <SelectField
-                label="CS Needed"
-                value={form.cs_needed}
+              <Field
+                label="AP"
+                value={form.cs_needed.toString()}
                 onChange={(value) => setFormField("cs_needed", value)}
-                options={["no", "yes"]}
+                prefix="$"
               />
               <Field label="Email" value={form.email} onChange={(value) => setFormField("email", value)} type="email" />
               <Field label="Phone" value={form.phone} onChange={(value) => setFormField("phone", value)} type="tel" />
@@ -458,7 +517,7 @@ const BookOfBusiness = () => {
                 value={form.referral_affiliate}
                 onChange={(value) => setFormField("referral_affiliate", value)}
               />
-              <Field label="Why Reason" value={form.why_reason} onChange={(value) => setFormField("why_reason", value)} />
+              <Field label="Coverage" value={form.why_reason.toString()} onChange={(value) => setFormField("why_reason", value)} prefix="$" />
               <Field
                 label="Date of Birth"
                 value={form.date_of_birth}
@@ -499,6 +558,78 @@ const BookOfBusiness = () => {
         </DialogContent>
       </Dialog>
 
+      <Dialog
+        open={Boolean(selectedClient)}
+        onOpenChange={(open) => {
+          if (!open) {
+            closeClientDetails();
+          }
+        }}
+      >
+        <DialogContent className="max-w-4xl w-[min(96vw,64rem)] max-h-[90vh] overflow-y-auto border-border bg-surface text-text">
+          {selectedClient ? (
+            <div className="space-y-6">
+              <DialogHeader className="space-y-1">
+                <DialogTitle className="text-2xl">{selectedClient.full_name}</DialogTitle>
+                <DialogDescription className="text-muted">
+                  Client details and record snapshot.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="rounded-2xl border border-border bg-bg p-5 shadow-sm">
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <DetailItem label="Status" value={selectedClient.status} />
+                  <DetailItem label="AP" value={formatMoney(selectedClient.cs_needed)} />
+                  <DetailItem label="Coverage" value={formatMoney(selectedClient.why_reason)} />
+                  <DetailItem label="Email" value={selectedClient.email} />
+                  <DetailItem label="Phone" value={selectedClient.phone} />
+                  <DetailItem label="State" value={selectedClient.state} />
+                  <DetailItem label="Lead Type" value={selectedClient.lead_type} />
+                  <DetailItem label="Lead Quality" value={selectedClient.lead_quality} />
+                  <DetailItem label="Referral Affiliate" value={selectedClient.referral_affiliate} />
+                  <DetailItem label="Date of Birth" value={selectedClient.date_of_birth} />
+                  <DetailItem label="Home Street" value={selectedClient.home_street} />
+                  <DetailItem label="Home City" value={selectedClient.home_city} />
+                  <DetailItem label="Home ZIP" value={selectedClient.home_zip} />
+                </div>
+
+                <div className="mt-5 grid gap-4 md:grid-cols-2">
+                  <DetailItem label="Created" value={selectedClient.created_at} />
+                  <DetailItem label="Updated" value={selectedClient.updated_at} />
+                </div>
+
+                <div className="mt-5">
+                  <p className="text-sm font-medium text-text mb-2">Notes</p>
+                  <div className="rounded-xl border border-border bg-surface p-4 text-sm text-muted whitespace-pre-wrap">
+                    {selectedClient.notes || "-"}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    fillFormFromClient(selectedClient);
+                    closeClientDetails();
+                  }}
+                  className="inline-flex items-center justify-center h-10 px-5 text-sm font-semibold text-white bg-primary-600 rounded-full shadow-[0_10px_24px_rgba(31,79,216,0.28)] hover:bg-primary-700 transition-all duration-200"
+                >
+                  Edit Client
+                </button>
+                <button
+                  type="button"
+                  onClick={closeClientDetails}
+                  className="inline-flex items-center justify-center h-10 px-5 text-sm font-semibold text-muted rounded-full border border-border hover:text-text"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          ) : null}
+        </DialogContent>
+      </Dialog>
+
       <Footer />
     </div>
   );
@@ -509,19 +640,29 @@ interface FieldProps {
   value: string;
   type?: "text" | "date" | "email" | "tel";
   required?: boolean;
+  prefix?: string;
   onChange: (value: string) => void;
 }
 
-const Field = ({ label, value, type = "text", required, onChange }: FieldProps) => (
+const Field = ({ label, value, type = "text", required, prefix, onChange }: FieldProps) => (
   <div>
     <label className="block text-sm font-medium text-text mb-1">{label}</label>
-    <input
-      type={type}
-      value={value}
-      required={required}
-      onChange={(event) => onChange(event.target.value)}
-      className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm"
-    />
+    <div className="relative">
+      {prefix && (
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-text pointer-events-none">
+          {prefix}
+        </span>
+      )}
+      <input
+        type={type}
+        value={value}
+        required={required}
+        onChange={(event) => onChange(event.target.value)}
+        className={`w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm ${
+          prefix ? "pl-6" : ""
+        }`}
+      />
+    </div>
   </div>
 );
 

@@ -3,14 +3,14 @@ export interface BookOfBusinessClient {
   user_id: string;
   full_name: string;
   status: string;
-  cs_needed: string;
+  cs_needed: number;
   email: string | null;
   phone: string | null;
   state: string | null;
   lead_type: string | null;
   lead_quality: string | null;
   referral_affiliate: string | null;
-  why_reason: string | null;
+  why_reason: number | null;
   notes: string | null;
   date_of_birth: string | null;
   home_street: string | null;
@@ -23,14 +23,14 @@ export interface BookOfBusinessClient {
 export interface BookOfBusinessClientInput {
   full_name: string;
   status: string;
-  cs_needed: string;
+  cs_needed: number;
   email: string;
   phone: string;
   state: string;
   lead_type: string;
   lead_quality: string;
   referral_affiliate: string;
-  why_reason: string;
+  why_reason: number;
   notes: string;
   date_of_birth: string;
   home_street: string;
@@ -41,14 +41,14 @@ export interface BookOfBusinessClientInput {
 export const defaultBookOfBusinessClientInput: BookOfBusinessClientInput = {
   full_name: "",
   status: "active",
-  cs_needed: "no",
+  cs_needed: 0,
   email: "",
   phone: "",
   state: "",
   lead_type: "",
   lead_quality: "",
   referral_affiliate: "",
-  why_reason: "",
+  why_reason: 0,
   notes: "",
   date_of_birth: "",
   home_street: "",
